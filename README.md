@@ -21,6 +21,9 @@ The Nunit test library for implementing consumer driven contract tests.
 `docker build -t nodebb .`
 `docker container run --mount type=bind,source='C:\Users\ramalik\source\repos\HotelFilterApp\data',target='/app/data' -d -p 8012:80 nodebb`
 
+## Search endpoint
+`GET http://localhost:8012/api/hotels/7294/arrivalDate//prices`
+
 ## Security
 The application would be secured following the OAUTH 2.0 security protocol. The Authorization server selected in Microsoft Azure AD. The developer can update the values in the app settings file after registering in Azure AD.
 [Steps](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-aspnet-core-web-api)

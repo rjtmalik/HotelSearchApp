@@ -1,6 +1,9 @@
 ﻿using HotelFilterApp.DAL.Contracts;
+using HotelFilterApp.DAL.Models;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,10 +18,11 @@ namespace HotelFilterApp.DAL
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<string> GetBy(int hotelId, DateTime arrivalDate)
+        public async Task<IEnumerable<HotelRoomRent>> GetAllAsync()
         {
             var filePath = Path.Combine(_appEnvironment.ContentRootPath, @"data/hotelsrates.json");
-            return await ReadFileAsync(filePath);
+            var strRoomRents = await ReadFileAsync(filePath);
+            return JsonConvert.DeserializeObject<IEnumerable<HotelRoomRent>>(strRoomRents);
         }
 
         private async Task<string> ReadFileAsync(string filePath)

@@ -1,5 +1,8 @@
 using HotelFilterApp.DAL;
 using HotelFilterApp.DAL.Contracts;
+using HotelFilterApp.Models;
+using HotelFilterApp.Services;
+using HotelFilterApp.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +30,8 @@ namespace HotelFilterApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddAutoMapper(typeof(MapperProfile));
+            services.AddScoped<IHotelService, HotelService>();
             services.AddScoped<IHotelDAL, ReadHotelFromFileDAL>();
             services.AddControllers();
             services.AddSwaggerGen(c =>

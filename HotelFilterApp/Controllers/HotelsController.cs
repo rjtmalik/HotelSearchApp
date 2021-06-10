@@ -1,4 +1,6 @@
 ﻿using HotelFilterApp.DAL.Contracts;
+using HotelFilterApp.Services.Contracts;
+using HotelFilterApp.Services.CustomExceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,30 +14,28 @@ namespace HotelFilterApp.Controllers
     public class HotelsController : ControllerBase
     {
         private readonly ILogger<HotelsController> _logger;
-        private readonly IHostingEnvironment _appEnvironment;
-        private readonly IHotelDAL _hotelDAL;
+        private readonly IHotelService _hotelService;
         public HotelsController(ILogger<HotelsController> logger,
-            IHostingEnvironment appEnvironment,
-            IHotelDAL hotelDAL)
+            IHotelService hotelService)
         {
             _logger = logger;
-            _appEnvironment = appEnvironment;
-            _hotelDAL = hotelDAL;
+            _hotelService = hotelService;
         }
 
         [HttpGet]
-        [Route("/api/hotels")]
-        public async Task<string> Get()
+        [Route("/api/hotels/{hotelId}/arrivalDate/{epochSeconds}/prices")]
+        public async Task<ActionResult> GetAsync(int hotelId, long epochSeconds)
         {
             try
             {
-                var filePath = Path.Combine(_appEnvironment.ContentRootPath, @"data/hotelsrates.json");
+                //var filePath = Path.Combine(_appEnvironment.ContentRootPath, @"data/hotelsrates.json");
                 //return await ReadFileAsync(filePath);
-                return await _hotelDAL.GetBy(1, new DateTime());
+                return Ok(await _hotelService.GetByAsync(hotelId, DateTimeOffset.FromUnixTimeSeconds(epochSeconds).DateTime));
             }
-            catch(Exception ex)
+            catch(HotelNotFoundException ex)
             {
-                return ex.Message;
+                _logger.LogError(ex.Message, ex);
+                return StatusCode(404);
             }
         }
 
