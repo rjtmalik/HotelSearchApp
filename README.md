@@ -18,6 +18,7 @@ The Nunit test library for implementing consumer driven contract tests.
 ## How To Run
 - Navigate to the root directory and then to folder data, and update the file hotelsrates.json. This file will be mounted in the container from this location.
 - Navigate to the root directory, and build from the Docker file
+
 `docker build -t hotelsapi .`
 `docker container run --mount type=bind,source='C:\Users\ramalik\source\repos\HotelFilterApp\data',target='/app/data' -d -p 8012:80 hotelsapi`
 
